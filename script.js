@@ -384,6 +384,48 @@ document.querySelectorAll('.q-btn').forEach((btn, index) => {
 // Load first question
 loadQuestion(0);
 
+// Fullscreen functionality
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+}
+
+// Update fullscreen button icon when fullscreen state changes
+document.addEventListener('fullscreenchange', () => {
+    const btn = document.getElementById('fullscreenBtn');
+    if (btn) {
+        if (document.fullscreenElement) {
+            // In fullscreen - show exit icon
+            btn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 4L8 8M16 4L12 8M16 16L12 12M4 16L8 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            `;
+        } else {
+            // Not in fullscreen - show enter icon
+            btn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none" />
+                    <circle cx="10" cy="10" r="3" fill="currentColor" />
+                </svg>
+            `;
+        }
+    }
+});
+
 // Initialize
 updateLineNumbers();
 
