@@ -31,119 +31,6 @@ document.addEventListener('mouseup', () => {
     }
 });
 
-// Fullscreen Toggle with cross-browser support
-function toggleFullscreen() {
-    const elem = document.documentElement;
-    
-    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
-        // Enter fullscreen with cross-browser support
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { // Safari
-            elem.webkitRequestFullscreen();
-        } else if (elem.mozRequestFullScreen) { // Firefox
-            elem.mozRequestFullScreen();
-        } else if (elem.msRequestFullscreen) { // IE/Edge
-            elem.msRequestFullscreen();
-        }
-    } else {
-        // Exit fullscreen with cross-browser support
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { // Safari
-            document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) { // Firefox
-            document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) { // IE/Edge
-            document.msExitFullscreen();
-        }
-    }
-}
-
-// Wait for DOM to load before adding event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners for fullscreen buttons
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    const closeBtn = document.getElementById('closeBtn');
-
-    if (fullscreenBtn) {
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', toggleFullscreen);
-    }
-
-    // Update fullscreen button icon based on state - cross-browser support
-    const fullscreenEvents = ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'];
-    
-    fullscreenEvents.forEach(eventName => {
-        document.addEventListener(eventName, () => {
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            if (fullscreenBtn) {
-                const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
-                                   document.mozFullScreenElement || document.msFullscreenElement;
-                
-                if (isFullscreen) {
-                    // In fullscreen - show exit fullscreen icon
-                    fullscreenBtn.innerHTML = `
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M7 2v5H2M13 2v5h5M7 18v-5H2M13 18v-5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    `;
-                } else {
-                    // Not in fullscreen - show enter fullscreen icon
-                    fullscreenBtn.innerHTML = `
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M2 7V2h5M18 7V2h-5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    `;
-                }
-            }
-        });
-    });
-
-    // Sidebar functionality
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarClose = document.getElementById('sidebarClose');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', () => {
-            if (sidebar) sidebar.classList.add('active');
-            if (sidebarOverlay) sidebarOverlay.classList.add('active');
-        });
-    }
-
-    if (sidebarClose) {
-        sidebarClose.addEventListener('click', () => {
-            if (sidebar) sidebar.classList.remove('active');
-            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
-        });
-    }
-
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', () => {
-            if (sidebar) sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-        });
-    }
-
-    // Question navigation
-    const questionButtons = document.querySelectorAll('.q-btn');
-    questionButtons.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-            loadQuestion(index);
-            if (sidebar) sidebar.classList.remove('active');
-            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
-        });
-    });
-
-    // Load first question
-    loadQuestion(0);
-});
-
 // Collapsible Sections
 function toggleSection(button) {
     const content = button.nextElementSibling;
@@ -464,8 +351,38 @@ function loadQuestion(index) {
     });
 }
 
-// The rest of the initialization is now in DOMContentLoaded above
+// Sidebar functionality
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebarClose = document.getElementById('sidebarClose');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
 
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.add('active');
+    sidebarOverlay.classList.add('active');
+});
+
+sidebarClose.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+});
+
+sidebarOverlay.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+});
+
+// Question navigation
+document.querySelectorAll('.q-btn').forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        loadQuestion(index);
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+    });
+});
+
+// Load first question
+loadQuestion(0);
 
 // Initialize
 updateLineNumbers();
@@ -490,113 +407,7 @@ document.querySelector('.btn-submit').addEventListener('click', () => {
 });
 
 // Add sample code for demonstration
-codeInput.value = `#include <iostream>
-using namespace std;
+codeInput.value = `// Write your code here
 
-int main()
-{
-    int i,n,key;
-    bool found = true;
-    cin>>n;
-    int arr[n];
-    for (int i =0;i<n;i++)
-        cin >> arr[i];
-    cin>>key;
-    for(i=0;i<n;i++)
-    {
-        if(arr[i]==key)
-        {
-            found = false;
-            break;
-        }
-    }
-    if(found)
-        cout<<"Product not found in the inventory";
-    else
-        cout<<"Product found at index: "<<i<<endl;
-}`;
+`;
 updateLineNumbers();
-
-// Simple C++ syntax highlighting
-function applySyntaxHighlighting() {
-    const code = codeInput.value;
-    const highlightedCode = document.getElementById('highlightedCode');
-    
-    if (!highlightedCode) return;
-    
-    // C++ Keywords
-    const keywords = ['int', 'bool', 'true', 'false', 'for', 'if', 'else', 'return', 'void', 'char', 'float', 'double', 'const', 'static', 'class', 'struct', 'public', 'private', 'protected', 'virtual', 'break', 'continue', 'while', 'do', 'switch', 'case', 'default', 'new', 'delete', 'this', 'nullptr', 'auto'];
-    
-    // C++ Types
-    const types = ['string', 'vector', 'map', 'set', 'list', 'queue', 'stack', 'pair', 'unordered_map', 'unordered_set'];
-    
-    // Preprocessor directives
-    const preprocessor = ['#include', '#define', '#ifdef', '#ifndef', '#endif', '#pragma'];
-    
-    // Builtin functions/objects
-    const builtins = ['cout', 'cin', 'endl', 'cerr', 'std', 'using', 'namespace', 'main'];
-    
-    let highlighted = code;
-    
-    // Escape HTML
-    highlighted = highlighted
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    
-    // Highlight preprocessor directives
-    preprocessor.forEach(prep => {
-        const regex = new RegExp(`(${prep.replace('#', '\\#')})`, 'g');
-        highlighted = highlighted.replace(regex, '<span class="preprocessor">$1</span>');
-    });
-    
-    // Highlight strings
-    highlighted = highlighted.replace(/"([^"\\\\]*(\\\\.[^"\\\\]*)*)"/g, '<span class="string">"$1"</span>');
-    highlighted = highlighted.replace(/'([^'\\\\]*(\\\\.[^'\\\\]*)*)'/g, '<span class="string">\'$1\'</span>');
-    
-    // Highlight comments
-    highlighted = highlighted.replace(/\\/\\/.*$/gm, '<span class="comment">$&</span>');
-    highlighted = highlighted.replace(/\\/\\*[\\s\\S]*?\\*\\//g, '<span class="comment">$&</span>');
-    
-    // Highlight numbers
-    highlighted = highlighted.replace(/\\b(\\d+\\.?\\d*)\\b/g, '<span class="number">$1</span>');
-    
-    // Highlight keywords
-    keywords.forEach(keyword => {
-        const regex = new RegExp(`\\\\b(${keyword})\\\\b`, 'g');
-        highlighted = highlighted.replace(regex, '<span class="keyword">$1</span>');
-    });
-    
-    // Highlight types
-    types.forEach(type => {
-        const regex = new RegExp(`\\\\b(${type})\\\\b`, 'g');
-        highlighted = highlighted.replace(regex, '<span class="type">$1</span>');
-    });
-    
-    // Highlight builtins
-    builtins.forEach(builtin => {
-        const regex = new RegExp(`\\\\b(${builtin})\\\\b`, 'g');
-        highlighted = highlighted.replace(regex, '<span class="builtin">$1</span>');
-    });
-    
-    // Highlight function calls
-    highlighted = highlighted.replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()/g, '<span class="function">$1</span>');
-    
-    highlightedCode.innerHTML = highlighted;
-}
-
-// Sync scroll between textarea and highlight layer
-codeInput.addEventListener('scroll', () => {
-    const highlight = document.getElementById('codeHighlight');
-    if (highlight) {
-        highlight.scrollTop = codeInput.scrollTop;
-        highlight.scrollLeft = codeInput.scrollLeft;
-    }
-});
-
-codeInput.addEventListener('input', () => {
-    applySyntaxHighlighting();
-    updateLineNumbers();
-});
-
-applySyntaxHighlighting();
