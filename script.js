@@ -31,53 +31,117 @@ document.addEventListener('mouseup', () => {
     }
 });
 
-// Fullscreen Toggle
+// Fullscreen Toggle with cross-browser support
 function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        // Enter fullscreen
-        document.documentElement.requestFullscreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen: ${err.message}`);
-        });
+    const elem = document.documentElement;
+    
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+        // Enter fullscreen with cross-browser support
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+            elem.msRequestFullscreen();
+        }
     } else {
-        // Exit fullscreen
+        // Exit fullscreen with cross-browser support
         if (document.exitFullscreen) {
             document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { // Safari
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) { // IE/Edge
+            document.msExitFullscreen();
         }
     }
 }
 
-// Add event listeners for fullscreen buttons
-const fullscreenBtn = document.getElementById('fullscreenBtn');
-const closeBtn = document.getElementById('closeBtn');
-
-if (fullscreenBtn) {
-    fullscreenBtn.addEventListener('click', toggleFullscreen);
-}
-
-if (closeBtn) {
-    closeBtn.addEventListener('click', toggleFullscreen);
-}
-
-// Update fullscreen button icon based on state
-document.addEventListener('fullscreenchange', () => {
+// Wait for DOM to load before adding event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners for fullscreen buttons
     const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const closeBtn = document.getElementById('closeBtn');
+
     if (fullscreenBtn) {
-        if (document.fullscreenElement) {
-            // In fullscreen - show exit fullscreen icon
-            fullscreenBtn.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 2v5H2M13 2v5h5M7 18v-5H2M13 18v-5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            `;
-        } else {
-            // Not in fullscreen - show enter fullscreen icon
-            fullscreenBtn.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M2 7V2h5M18 7V2h-5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            `;
-        }
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
     }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', toggleFullscreen);
+    }
+
+    // Update fullscreen button icon based on state - cross-browser support
+    const fullscreenEvents = ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange'];
+    
+    fullscreenEvents.forEach(eventName => {
+        document.addEventListener(eventName, () => {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            if (fullscreenBtn) {
+                const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
+                                   document.mozFullScreenElement || document.msFullscreenElement;
+                
+                if (isFullscreen) {
+                    // In fullscreen - show exit fullscreen icon
+                    fullscreenBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7 2v5H2M13 2v5h5M7 18v-5H2M13 18v-5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    `;
+                } else {
+                    // Not in fullscreen - show enter fullscreen icon
+                    fullscreenBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M2 7V2h5M18 7V2h-5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    `;
+                }
+            }
+        });
+    });
+
+    // Sidebar functionality
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            if (sidebar) sidebar.classList.add('active');
+            if (sidebarOverlay) sidebarOverlay.classList.add('active');
+        });
+    }
+
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', () => {
+            if (sidebar) sidebar.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', () => {
+            if (sidebar) sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    // Question navigation
+    const questionButtons = document.querySelectorAll('.q-btn');
+    questionButtons.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            loadQuestion(index);
+            if (sidebar) sidebar.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        });
+    });
+
+    // Load first question
+    loadQuestion(0);
 });
 
 // Collapsible Sections
@@ -400,38 +464,8 @@ function loadQuestion(index) {
     });
 }
 
-// Sidebar functionality
-const sidebar = document.getElementById('sidebar');
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebarClose = document.getElementById('sidebarClose');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
+// The rest of the initialization is now in DOMContentLoaded above
 
-sidebarToggle.addEventListener('click', () => {
-    sidebar.classList.add('active');
-    sidebarOverlay.classList.add('active');
-});
-
-sidebarClose.addEventListener('click', () => {
-    sidebar.classList.remove('active');
-    sidebarOverlay.classList.remove('active');
-});
-
-sidebarOverlay.addEventListener('click', () => {
-    sidebar.classList.remove('active');
-    sidebarOverlay.classList.remove('active');
-});
-
-// Question navigation
-document.querySelectorAll('.q-btn').forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-        loadQuestion(index);
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-    });
-});
-
-// Load first question
-loadQuestion(0);
 
 // Initialize
 updateLineNumbers();
