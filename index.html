@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSET208- Ethics For Engineering,Patents,Copyrights and IPR - Mid term</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <!-- Sliding Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">✕</button>
+        </div>
+        
+        <div class="sidebar-content">
+            <!-- Timer -->
+            <div class="sidebar-timer">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="8" stroke="#4299e1" stroke-width="2" fill="none"/>
+                    <path d="M10 6v4l3 3" stroke="#4299e1" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="timer-label">Time Remaining</span>
+                <span class="timer-value">00:59:19</span>
+            </div>
+
+            <!-- Sections -->
+            <div class="sidebar-sections">
+                <div class="section-item">
+                    <div class="section-header-item">
+                        <span>Section - A</span>
+                        <span class="section-count">0/5</span>
+                    </div>
+                </div>
+                <div class="section-item">
+                    <div class="section-header-item">
+                        <span>Section - B</span>
+                        <span class="section-count">0/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Grid -->
+            <div class="question-grid">
+                <button class="q-btn" data-question="1">1</button>
+                <button class="q-btn" data-question="2">2</button>
+                <button class="q-btn" data-question="3">3</button>
+                <button class="q-btn" data-question="4">4</button>
+                <button class="q-btn" data-question="5">5</button>
+                <button class="q-btn" data-question="6">6</button>
+                <button class="q-btn" data-question="7">7</button>
+                <button class="q-btn" data-question="8">8</button>
+                <button class="q-btn" data-question="9">9</button>
+                <button class="q-btn" data-question="10">10</button>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color answered"></span>
+                    <span>Answered 0</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color not-answered"></span>
+                    <span>Not Answered 1</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color not-visited"></span>
+                    <span>Not Visited 9</span>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="sidebar-summary">
+                <button class="btn-summary">Overall Summary</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Problem Header -->
+    <div class="problem-header">
+        <div class="header-left">
+            <img src="assets/BU_Logo_Horizontal-Web-RGB.jpg" alt="Bennett University" class="university-logo">
+        </div>
+        <div class="header-center">
+            <div class="course-title">CSET208- Data Structure and Algorithms</div>
+            <div class="exam-info">Mid term</div>
+            <div class="question-info"><span class="section-label">MCQs (Section 1 of 2)</span> > <span class="question-label">Question 1 of 30 (1 marks)</span></div>
+        </div>
+        <div class="header-right">
+            <div class="student-info">
+                <div class="student-name">Sajal Kumar</div>
+                <div class="student-id">S24CSEU1704</div>
+            </div>
+            <div class="user-avatar">SK</div>
+            <button class="icon-btn" id="fullscreenBtn" title="Toggle Fullscreen">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M2 7V2h5M18 7V2h-5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="icon-btn" id="closeBtn" title="Toggle Fullscreen">✕</button>
+        </div>
+    </div>
+
+    <!-- Secondary Navigation -->
+    <nav class="secondary-nav">
+        <div class="nav-info">
+            <div class="info-item">
+                <span class="info-label">CSE</span>
+                <span class="info-value">S24CSEU1704</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Section - 1 (Section 1 of 1)</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Q1 of 2</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Marks 6</span>
+            </div>
+            <button class="btn btn-jump">Jump to</button>
+        </div>
+        <div class="nav-actions">
+            <span class="platform-name">BinarySearch.cpp</span>
+            <button class="btn btn-submit">Submit</button>
+            <button class="icon-btn">📋</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Left Panel - Problem Statement -->
+        <div class="left-panel">
+            <div class="problem-section">
+                <button class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title" id="questionTitle">Stack - Push and Pop Operations</span>
+                    <span class="collapse-icon">^</span>
+                </button>
+                <div class="section-content" id="questionContent">
+                    <p>Implement a stack data structure with push and pop operations. The stack should follow LIFO (Last In First Out) principle.</p>
+
+                    <h3>Input Format:</h3>
+                    <ul>
+                        <li>First line contains number of operations N</li>
+                        <li>Next N lines contain either "push x" or "pop"</li>
+                    </ul>
+
+                    <h3>Output Format:</h3>
+                    <ul>
+                        <li>For each pop operation, print the popped element</li>
+                        <li>If stack is empty during pop, print "Stack is empty"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="problem-section">
+                <button class="section-header" onclick="toggleSection(this)">
+                    <span class="section-title">Sample Test Cases</span>
+                    <span class="collapse-icon">^</span>
+                </button>
+                <div class="section-content" id="testCaseContent">
+                    <div class="test-case">
+                        <h4>Test Case 1:</h4>
+                        <p><strong>Input:</strong></p>
+                        <pre class="output-box">4
+push 10
+push 20
+pop
+push 30</pre>
+                        <p><strong>Expected Output:</strong></p>
+                        <pre class="result-box">20</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resizer -->
+        <div class="resizer" id="resizer"></div>
+
+        <!-- Right Panel - Code Editor -->
+        <div class="right-panel">
+            <div class="code-editor">
+                <div class="line-numbers" id="lineNumbers">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div>7</div>
+                    <div>8</div>
+                    <div>9</div>
+                    <div>10</div>
+                    <div>11</div>
+                    <div>12</div>
+                    <div>13</div>
+                    <div>14</div>
+                    <div>15</div>
+                    <div>16</div>
+                    <div>17</div>
+                    <div>18</div>
+                    <div>19</div>
+                    <div>20</div>
+                </div>
+                <div class="code-input-wrapper">
+                    <pre class="code-highlight" id="codeHighlight"><code id="highlightedCode"></code></pre>
+                    <textarea class="code-input" id="codeInput" spellcheck="false"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <footer class="status-bar">
+        <div class="status-left">
+            <button class="btn btn-finish-footer">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Finish
+            </button>
+            <button class="btn btn-clear-footer">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="3" y="4" width="10" height="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+                </svg>
+                Clear
+            </button>
+        </div>
+        <div class="status-center">
+            <button class="btn btn-nav-footer">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Previous
+            </button>
+            <button class="btn btn-nav-footer btn-next-footer">
+                Next
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+        <div class="status-right">
+            <button class="icon-btn-footer">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M17 10C17 13.866 13.866 17 10 17C6.134 17 3 13.866 3 10C3 6.134 6.134 3 10 3"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M17 3L10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <button class="icon-btn-footer">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                        d="M2 8L10 3L18 8V16C18 16.5304 17.7893 17.0391 17.4142 17.4142C17.0391 17.7893 16.5304 18 16 18H4C3.46957 18 2.96086 17.7893 2.58579 17.4142C2.21071 17.0391 2 16.5304 2 16V8Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7 18V10H13V18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <button class="icon-btn-footer">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L12 8L18 8L13 12L15 18L10 14L5 18L7 12L2 8L8 8L10 2Z" fill="currentColor" />
+                </svg>
+            </button>
+            <button class="icon-btn-footer">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none" />
+                    <circle cx="10" cy="10" r="3" fill="currentColor" />
+                </svg>
+            </button>
+            <button class="icon-btn-footer">⋮</button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
